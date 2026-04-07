@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Nura — Bien-être & Sérénité</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+:root {
+  --bg:      #f7f3ee;
+  --bg2:     #f0ebe2;
+  --bg3:     #e8e0d4;
+  --card:    #faf7f3;
+  --border:  rgba(139,109,80,0.12);
+  --border2: rgba(139,109,80,0.22);
+  --text:    #2c1f14;
+  --muted:   #9e8878;
+  --muted2:  #c9b9a8;
+  --accent:  #c4622d;
+  --accent2: #d4936a;
+  --accent3: #8b6b4a;
+  --gold:    #c9a96e;
+  --sage:    #7a9e8a;
+  --sand:    #e8d5b7;
+  --cream:   #fdf9f4;
+  --r:       20px;
+  --rsm:     12px;
+}
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+}
+.phone {
+  width: 100%; max-width: 420px;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  background: var(--bg);
+}
+.screen { display:none; flex-direction:column; min-height:100vh; animation: rise .35s ease; }
+.screen.active { display:flex; }
+@keyframes rise { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+
+/* ── NAVBAR ── */
+.navbar {
+  position:fixed; bottom:0; left:50%; transform:translateX(-50%);
+  width:100%; max-width:420px;
+  background: rgba(247,243,238,0.95);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border);
+  display:flex; padding:10px 8px 24px;
+  z-index:200;
+}
+.nav-item { flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; cursor:pointer; padding:8px 4px; border-radius:12px; transition:all .2s; }
+.nav-icon { font-size:19px; opacity:.35; transition:all .2s; }
+.nav-label { font-size:10px; color:var(--muted); font-weight:500; letter-spacing:.03em; transition:all .2s; }
+.nav-item.active .nav-icon { opacity:1; }
+.nav-item.active .nav-label { color:var(--accent); }
+
+/* ── LOGIN ── */
+#screen-login {
+  background: var(--cream);
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  justify-content: space-between;
+  padding: 0;
+}
+.login-top {
+  position: relative;
+  height: 340px;
+  background: linear-gradient(160deg, #c4622d 0%, #8b4a2a 60%, #5c2e15 100%);
+  display: flex; flex-direction: column;
+  justify-content: flex-end;
+  padding: 36px 28px;
+  overflow: hidden;
+}
+.login-top::before {
+  content: '';
+  position: absolute; top:-80px; right:-60px;
+  width: 260px; height: 260px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 50%;
+}
+.login-top::after {
+  content: '';
+  position: absolute; bottom:-40px; left:-40px;
+  width: 180px; height: 180px;
+  background: rgba(201,169,110,0.12);
+  border-radius: 50%;
+}
+.login-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600; font-size: 52px;
+  color: white; letter-spacing: -0.01em;
+  line-height: 1; margin-bottom: 6px;
+  position: relative; z-index: 1;
+}
+.login-logo span { color: var(--gold); font-style: italic; }
+.login-tagline {
+  font-size: 14px; color: rgba(255,255,255,0.7);
+  font-weight: 300; letter-spacing: 0.02em;
+  position: relative; z-index: 1;
+}
+.login-pillars {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  margin-top: 14px; position: relative; z-index: 1;
+}
+.login-pill {
+  font-size: 11px; padding: 4px 10px;
+  border-radius: 100px;
+  background: rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.8);
+  border: 1px solid rgba(255,255,255,0.15);
+  letter-spacing: 0.02em;
+}
+.login-form-wrap { padding: 32px 28px 40px; display: flex; flex-direction: column; gap: 16px; }
+.field-label { font-size: 11px; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; font-weight: 500; margin-bottom: 5px; }
+input[type=email], input[type=password] {
+  background: var(--bg2); border: 1px solid var(--border2);
+  border-radius: var(--rsm); padding: 14px 16px;
+  color: var(--text); font-family: 'DM Sans', sans-serif;
+  font-size: 15px; outline: none; transition: border-color .2s; width: 100%;
+}
+input:focus { border-color: var(--accent); }
+.btn-main {
+  background: var(--accent); color: white;
+  border: none; border-radius: var(--rsm); padding: 16px;
+  font-family: 'DM Sans', sans-serif; font-weight: 500;
+  font-size: 15px; cursor: pointer; transition: all .2s;
+  letter-spacing: 0.02em;
+}
+.btn-main:active { transform: scale(.98); opacity: .9; }
+.btn-soft {
+  background: transparent; color: var(--muted);
+  border: 1px solid var(--border2); border-radius: var(--rsm);
+  padding: 14px; font-family: 'DM Sans', sans-serif;
+  font-size: 14px; cursor: pointer; transition: all .2s; text-align: center;
+}
+.divider { text-align:center; color:var(--muted2); font-size:13px; position:relative; }
+.divider::before,.divider::after { content:''; position:absolute; top:50%; width:38%; height:1px; background:var(--border2); }
+.divider::before{left:0}.divider::after{right:0}
+
+/* ── SHARED ── */
+.section-header { display:flex; justify-content:space-between; align-items:center; }
+.section-title { font-family:'Cormorant Garamond',serif; font-weight:600; font-size:20px; letter-spacing:-0.01em; }
+.section-link { color:var(--accent); font-size:13px; cursor:pointer; }
+.topbar { display:flex; justify-content:space-between; align-items:flex-start; }
+.greeting { color:var(--muted); font-size:13px; margin-bottom:2px; font-weight:300; }
+.username { font-family:'Cormorant Garamond',serif; font-weight:600; font-size:24px; letter-spacing:-0.01em; }
+.avatar {
+  width:44px; height:44px;
+  background: linear-gradient(135deg, var(--accent), var(--gold));
+  border-radius:50%; display:flex; align-items:center; justify-content:center;
+  font-family:'Cormorant Garamond',serif; font-weight:600; font-size:17px; color:white; flex-shrink:0;
+}
+.status-dot { width:6px; height:6px; background:var(--sage); border-radius:50%; animation:pulse 2s infinite; }
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+
+/* ── HOME ── */
+#screen-home { padding:56px 20px 100px; gap:22px; overflow-y:auto; }
+.nura-card {
+  background: linear-gradient(145deg, #c4622d 0%, #8b4a2a 100%);
+  border-radius: 22px; padding: 22px;
+  cursor: pointer; transition: all .2s;
+  position: relative; overflow: hidden;
+}
+.nura-card::before {
+  content:''; position:absolute;
+  top:-50px; right:-50px; width:160px; height:160px;
+  background: rgba(201,169,110,0.15); border-radius:50%;
+}
+.nura-card::after {
+  content:''; position:absolute;
+  bottom:-30px; left:-20px; width:100px; height:100px;
+  background: rgba(255,255,255,0.05); border-radius:50%;
+}
+.nura-card:active { transform:scale(.99); }
+.card-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:18px; position:relative; z-index:1; }
+.card-brand { font-family:'Cormorant Garamond',serif; font-weight:600; font-size:22px; color:white; letter-spacing:-0.01em; }
+.card-brand span { color:var(--gold); font-style:italic; }
+.card-status-pill { display:flex; align-items:center; gap:5px; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.2); border-radius:100px; padding:4px 10px; font-size:11px; color:white; }
+.card-member-name { font-family:'Cormorant Garamond',serif; font-weight:500; font-size:18px; color:white; margin-bottom:3px; position:relative; z-index:1; }
+.card-plan { color:rgba(255,255,255,0.65); font-size:12px; position:relative; z-index:1; }
+.card-tap { font-size:11px; color:rgba(255,255,255,0.45); margin-top:14px; position:relative; z-index:1; }
+
+.stats-row { display:flex; gap:10px; }
+.stat-card { flex:1; background:var(--card); border:1px solid var(--border); border-radius:var(--rsm); padding:16px; }
+.stat-val { font-family:'Cormorant Garamond',serif; font-weight:600; font-size:28px; line-height:1; margin-bottom:3px; }
+.stat-val.tc { color:var(--accent); }
+.stat-val.sg { color:var(--sage); }
+.stat-label { font-size:11px; color:var(--muted); }
+
+.next-sessions { background:var(--card); border:1px solid var(--border); border-radius:var(--r); overflow:hidden; }
+.session-item { display:flex; align-items:center; padding:15px 16px; gap:13px; border-bottom:1px solid var(--border); cursor:pointer; transition:background .15s; }
+.session-item:last-child { border-bottom:none; }
+.session-item:active { background:var(--bg2); }
+.session-time-badge { background:var(--bg2); border-radius:10px; padding:8px 11px; text-align:center; min-width:54px; flex-shrink:0; }
+.session-time { font-family:'Cormorant Garamond',serif; font-weight:600; font-size:15px; }
+.session-day { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; }
+.session-info { flex:1; }
+.session-name { font-weight:500; font-size:14px; margin-bottom:2px; }
+.session-meta { font-size:12px; color:var(--muted); }
+.session-spots { font-size:11px; padding:3px 8px; border-radius:100px; font-weight:500; }
+.spots-ok { background:rgba(122,158,138,0.12); color:var(--sage); }
+.spots-few { background:rgba(196,98,45,0.1); color:var(--accent); }
+
+.clubs-scroll { display:flex; gap:12px; overflow-x:auto; scrollbar-width:none; padding-bottom:4px; }
+.clubs-scroll::-webkit-scrollbar { display:none; }
+.mini-club { flex-shrink:0; width:140px; border-radius:16px; overflow:hidden; cursor:pointer; transition:transform .2s; }
+.mini-club:active { transform:scale(.97); }
+
+/* ── MEMBER CARD ── */
+#screen-card { padding:56px 20px 100px; gap:22px; align-items:center; overflow-y:auto; }
+.card-page-title { font-family:'Cormorant Garamond',serif; font-weight:600; font-size:26px; text-align:center; width:100%; letter-spacing:-0.01em; }
+.big-nura-card {
+  background: linear-gradient(150deg, #c4622d 0%, #7a3e1e 100%);
+  border-radius: 24px; padding: 28px;
+  width:100%; max-width:360px;
+  position:relative; overflow:hidden;
+}
+.big-nura-card::before { content:''; position:absolute; top:-60px; right:-60px; width:200px; height:200px; background:rgba(201,169,110,0.12); border-radius:50%; pointer-events:none; }
+.big-card-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:22px; }
+.big-card-logo { font-family:'Cormorant Garamond',serif; font-weight:600; font-size:24px; color:white; }
+.big-card-logo span { color:var(--gold); font-style:italic; }
+.big-card-active { display:flex; align-items:center; gap:5px; font-size:11px; color:rgba(255,255,255,0.8); font-weight:500; letter-spacing:.05em; text-transform:uppercase; }
+.big-card-name { font-family:'Cormorant Garamond',serif; font-weight:500; font-size:22px; color:white; margin-bottom:3px; }
+.big-card-id { font-size:11px; color:rgba(255,255,255,0.5); margin-bottom:18px; letter-spacing:.04em; }
+.qr-wrap { background:white; border-radius:16px; padding:14px; display:flex; justify-content:center; align-items:center; margin:0 auto 18px; width:176px; height:176px; }
+#qr-code canvas,#qr-code img { width:148px!important; height:148px!important; }
+.big-card-footer { display:flex; justify-content:space-between; align-items:flex-end; }
+.plan-lbl,.exp-lbl { font-size:10px; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:.06em; margin-bottom:3px; }
+.exp-lbl { text-align:right; }
+.plan-name { font-family:'Cormorant Garamond',serif; font-weight:500; font-size:15px; color:white; }
+.exp-date { font-family:'Cormorant Garamond',serif; font-weight:500; font-size:15px; color:white; text-align:right; }
+.scan-hint { text-align:center; font-size:13px; color:var(--muted); }
+.access-log { width:100%; background:var(--card); border:1px solid var(--border); border-radius:var(--r); overflow:hidden; }
+.log-item { display:flex; align-items:center; padding:13px 15px; gap:11px; border-bottom:1px solid var(--border); }
+.log-item:last-child { border-bottom:none; }
+.log-icon { width:32px; height:32px; background:var(--bg2); border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; }
+.log-info { flex:1; }
+.log-place { font-size:13px; font-weight:500; margin-bottom:1px; }
+.log-date { font-size:12px; color:var(--muted); }
+.log-badge { font-size:11px; padding:3px 8px; border-radius:100px; background:rgba(122,158,138,0.12); color:var(--sage); font-weight:500; }
+
+/* ── EXPLORE ── */
+#screen-explore { padding:56px 20px 100px; gap:20px; overflow-y:auto; }
+.explore-eyebrow { font-size:11px; color:var(--muted); letter-spacing:.08em; text-transform:uppercase; margin-bottom:6px; }
+.explore-title { font-family:'Cormorant Garamond',serif; font-weight:600; font-size:30px; line-height:1.1; letter-spacing:-0.01em; }
+.explore-title em { color:var(--accent); font-style:italic; }
+.search-bar { background:var(--card); border:1px solid var(--border2); border-radius:var(--rsm); padding:13px 16px; display:flex; align-items:center; gap:10px; color:var(--muted); font-size:14px; }
+.filter-row { display:flex; gap:8px; overflow-x:auto; scrollbar-width:none; }
+.filter-row::-webkit-scrollbar { display:none; }
+.filter-chip { padding:7px 14px; border-radius:100px; background:var(--card); border:1px solid var(--border2); color:var(--muted); font-size:13px; cursor:pointer; flex-shrink:0; transition:all .2s; white-space:nowrap; }
+.filter-chip.active { background:rgba(196,98,45,0.08); border-color:rgba(196,98,45,0.3); color:var(--accent); }
+.clubs-grid { display:flex; flex-direction:column; gap:14px; }
+.club-card { border-radius:var(--r); overflow:hidden; cursor:pointer; transition:transform .2s; }
+.club-card:active { transform:scale(.98); }
+.club-hero { height:190px; position:relative; overflow:hidden; display:flex; align-items:flex-end; }
+.club-hero-bg { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:110px; opacity:.15; }
+.club-hero-grad { position:absolute; inset:0; }
+.club-hero-content { position:relative; z-index:2; padding:18px; width:100%; }
+.club-hero-tag { display:inline-flex; align-items:center; gap:5px; font-size:11px; font-weight:500; letter-spacing:.04em; text-transform:uppercase; padding:4px 10px; border-radius:100px; margin-bottom:8px; }
+.club-hero-name { font-weight:700; font-size:24px; line-height:1; color:white; margin-bottom:3px; text-shadow:0 2px 12px rgba(0,0,0,.3); }
+.club-hero-sub { font-size:13px; color:rgba(255,255,255,.65); }
+.club-footer { padding:14px 18px; display:flex; justify-content:space-between; align-items:center; }
+.club-pills { display:flex; gap:6px; flex-wrap:wrap; }
+.club-pill { font-size:11px; padding:4px 10px; border-radius:100px; border:1px solid; font-weight:500; }
+.club-cta { font-family:'DM Sans',sans-serif; font-weight:500; font-size:13px; padding:9px 18px; border-radius:100px; border:none; cursor:pointer; transition:all .2s; white-space:nowrap; flex-shrink:0; }
+
+/* ── CLUB PAGE ── */
+#screen-club { min-height:100vh; overflow-y:auto; padding-bottom:100px; }
+.club-back { position:fixed; top:16px; left:16px; z-index:300; width:38px; height:38px; background:rgba(247,243,238,0.85); backdrop-filter:blur(12px); border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:16px; transition:all .2s; border:1px solid var(--border2); color:var(--text); }
+.club-back:active { transform:scale(.92); }
+.club-banner { height:270px; position:relative; overflow:hidden; display:flex; align-items:flex-end; }
+.club-banner-bg { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:190px; opacity:.13; }
+.club-banner-grad { position:absolute; inset:0; }
+.club-banner-content { position:relative; z-index:2; padding:22px; }
+.club-banner-eyebrow { font-size:11px; font-weight:500; letter-spacing:.1em; text-transform:uppercase; margin-bottom:6px; opacity:.8; }
+.club-banner-name { font-weight:800; font-size:32px; line-height:1; color:white; margin-bottom:5px; text-shadow:0 4px 24px rgba(0,0,0,.4); }
+.club-banner-desc { font-size:14px; color:rgba(255,255,255,.65); max-width:260px; line-height:1.5; }
+.club-body { padding:22px 20px; display:flex; flex-direction:column; gap:26px; background:var(--bg); }
+.club-stats { display:flex; background:var(--card); border:1px solid var(--border); border-radius:var(--rsm); overflow:hidden; }
+.club-stat { flex:1; padding:14px 12px; text-align:center; border-right:1px solid var(--border); }
+.club-stat:last-child { border-right:none; }
+.club-stat-val { font-family:'Cormorant Garamond',serif; font-weight:600; font-size:20px; margin-bottom:2px; }
+.club-stat-label { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+.offers-title,.schedule-title { font-family:'Cormorant Garamond',serif; font-weight:600; font-size:20px; margin-bottom:14px; letter-spacing:-0.01em; }
+.offers-list,.schedule-list { display:flex; flex-direction:column; gap:10px; }
+.offer-card { border-radius:var(--rsm); border:1px solid var(--border); overflow:hidden; cursor:pointer; transition:all .2s; background:var(--card); }
+.offer-card:active { transform:scale(.99); }
+.offer-header { padding:16px; display:flex; justify-content:space-between; align-items:flex-start; gap:12px; }
+.offer-name { font-family:'Cormorant Garamond',serif; font-weight:600; font-size:17px; margin-bottom:3px; }
+.offer-desc { font-size:12px; color:var(--muted); line-height:1.5; }
+.offer-price { font-family:'Cormorant Garamond',serif; font-weight:600; font-size:22px; }
+.offer-period { font-size:11px; color:var(--muted); text-align:right; }
+.offer-feats { padding:0 16px 12px; display:flex; flex-wrap:wrap; gap:6px; }
+.offer-feat { font-size:11px; padding:3px 9px; border-radius:100px; border:1px solid var(--border2); color:var(--muted); }
+.offer-foot { padding:11px 16px; border-top:1px solid var(--border); }
+.offer-btn { width:100%; padding:11px; border-radius:9px; font-family:'DM Sans',sans-serif; font-weight:500; font-size:13px; border:none; cursor:pointer; transition:all .2s; }
+.offer-btn:active { transform:scale(.98); opacity:.85; }
+.sched-item { background:var(--card); border:1px solid var(--border); border-radius:var(--rsm); padding:13px 15px; display:flex; align-items:center; gap:13px; cursor:pointer; transition:background .15s; }
+.sched-item:active { filter:brightness(.97); }
+.sched-time-box { border-radius:9px; padding:8px 11px; text-align:center; min-width:56px; flex-shrink:0; }
+.sched-time { font-family:'Cormorant Garamond',serif; font-weight:600; font-size:15px; }
+.sched-day { font-size:10px; text-transform:uppercase; letter-spacing:.06em; margin-top:1px; opacity:.65; }
+.sched-info { flex:1; }
+.sched-name { font-weight:500; font-size:13px; margin-bottom:2px; }
+.sched-meta { font-size:12px; color:var(--muted); }
+.sched-spots { font-size:11px; font-weight:500; padding:3px 9px; border-radius:100px; flex-shrink:0; }
+
+/* ── PLANNING ── */
+#screen-planning { padding:56px 20px 100px; gap:20px; overflow-y:auto; }
+.day-tabs { display:flex; gap:8px; overflow-x:auto; scrollbar-width:none; }
+.day-tabs::-webkit-scrollbar { display:none; }
+.day-tab { display:flex; flex-direction:column; align-items:center; gap:3px; padding:10px 13px; border-radius:var(--rsm); background:var(--card); border:1px solid var(--border); cursor:pointer; flex-shrink:0; transition:all .2s; }
+.day-tab.active { background:var(--accent); border-color:var(--accent); }
+.day-tab-name { font-size:10px; font-weight:500; letter-spacing:.04em; text-transform:uppercase; color:var(--muted); }
+.day-tab-num { font-family:'Cormorant Garamond',serif; font-weight:600; font-size:20px; color:var(--text); }
+.day-tab.active .day-tab-name,.day-tab.active .day-tab-num { color:white; }
+.cat-filter { display:flex; gap:8px; overflow-x:auto; scrollbar-width:none; }
+.cat-filter::-webkit-scrollbar { display:none; }
+.cat-btn { padding:7px 14px; border-radius:100px; background:var(--card); border:1px solid var(--border2); color:var(--muted); font-size:13px; cursor:pointer; flex-shrink:0; transition:all .2s; white-space:nowrap; }
+.cat-btn.active { background:rgba(196,98,45,0.08); border-color:rgba(196,98,45,0.25); color:var(--accent); }
+.planning-list { display:flex; flex-direction:column; gap:10px; }
+.p-card { background:var(--card); border:1px solid var(--border); border-radius:var(--r); padding:16px; cursor:pointer; transition:all .2s; position:relative; overflow:hidden; }
+.p-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; border-radius:3px 0 0 3px; }
+.p-card.c1::before { background:var(--accent); }
+.p-card.c2::before { background:var(--sage); }
+.p-card.c3::before { background:var(--gold); }
+.p-card:active { transform:scale(.99); }
+.p-card-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px; }
+.p-card-name { font-family:'Cormorant Garamond',serif; font-weight:600; font-size:17px; }
+.p-card-time { font-size:12px; color:var(--muted); background:var(--bg2); border-radius:7px; padding:3px 9px; }
+.p-meta { display:flex; gap:10px; margin-bottom:12px; flex-wrap:wrap; }
+.p-meta-chip { display:flex; align-items:center; gap:4px; font-size:12px; color:var(--muted); }
+.reserve-btn { width:100%; background:var(--bg2); border:1px solid var(--border2); border-radius:9px; padding:10px; color:var(--text); font-family:'DM Sans',sans-serif; font-size:13px; cursor:pointer; transition:all .2s; display:flex; align-items:center; justify-content:center; gap:5px; }
+.reserve-btn.reserved { background:rgba(122,158,138,0.1); border-color:rgba(122,158,138,0.3); color:var(--sage); }
+.reserve-btn:active { background:var(--accent); color:white; border-color:var(--accent); }
+
+/* ── ADMIN ── */
+#screen-admin { padding:56px 20px 100px; gap:18px; overflow-y:auto; }
+.admin-header { display:flex; justify-content:space-between; align-items:flex-start; }
+.admin-title { font-family:'Cormorant Garamond',serif; font-weight:600; font-size:26px; line-height:1.1; letter-spacing:-0.01em; }
+.admin-sub { color:var(--muted); font-size:13px; margin-top:3px; }
+.admin-tag { background:rgba(196,98,45,0.1); border:1px solid rgba(196,98,45,0.2); color:var(--accent); font-size:11px; font-weight:500; padding:4px 10px; border-radius:100px; }
+.kpi-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.kpi-card { background:var(--card); border:1px solid var(--border); border-radius:var(--rsm); padding:16px; }
+.kpi-lbl { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; margin-bottom:7px; }
+.kpi-val { font-family:'Cormorant Garamond',serif; font-weight:600; font-size:30px; line-height:1; margin-bottom:4px; }
+.kpi-val.tc { color:var(--accent); }
+.kpi-val.sg { color:var(--sage); }
+.kpi-val.gd { color:var(--gold); }
+.kpi-trend { font-size:11px; color:var(--muted); }
+.kpi-trend.up { color:var(--sage); }
+.scanner-card { background:var(--card); border:1px solid var(--border); border-radius:var(--r); padding:18px; }
+.scanner-title { font-family:'Cormorant Garamond',serif; font-weight:600; font-size:17px; margin-bottom:3px; }
+.scanner-sub { font-size:13px; color:var(--muted); margin-bottom:14px; }
+.scanner-preview { background:var(--bg2); border:2px dashed var(--muted2); border-radius:14px; height:150px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; cursor:pointer; transition:all .2s; position:relative; overflow:hidden; }
+.scanner-preview:active { border-color:var(--accent); }
+.scanner-frame { width:76px; height:76px; position:relative; }
+.scanner-frame::before,.scanner-frame::after { content:''; position:absolute; width:18px; height:18px; border-color:var(--accent); border-style:solid; }
+.scanner-frame::before { top:0; left:0; border-width:3px 0 0 3px; border-radius:4px 0 0 0; }
+.scanner-frame::after { bottom:0; right:0; border-width:0 3px 3px 0; border-radius:0 0 4px 0; }
+.scanner-line { position:absolute; top:50%; left:10%; right:10%; height:2px; background:linear-gradient(90deg,transparent,var(--accent),transparent); animation:scan 2s ease-in-out infinite; }
+@keyframes scan{0%{top:10%;opacity:0}10%{opacity:1}90%{opacity:1}100%{top:90%;opacity:0}}
+.scan-text { font-size:13px; color:var(--muted); }
+.scan-result { margin-top:10px; border-radius:var(--rsm); padding:13px 15px; display:flex; align-items:center; gap:11px; display:none; }
+.scan-result.success { background:rgba(122,158,138,0.1); border:1px solid rgba(122,158,138,0.25); }
+.scan-result.fail { background:rgba(196,98,45,0.08); border:1px solid rgba(196,98,45,0.2); }
+.scan-result-icon { font-size:22px; }
+.scan-result-name { font-weight:500; font-size:14px; margin-bottom:1px; }
+.scan-result-info { font-size:12px; color:var(--muted); }
+.member-list { background:var(--card); border:1px solid var(--border); border-radius:var(--r); overflow:hidden; }
+.member-item { display:flex; align-items:center; gap:11px; padding:13px 15px; border-bottom:1px solid var(--border); cursor:pointer; transition:background .15s; }
+.member-item:last-child { border-bottom:none; }
+.member-item:active { background:var(--bg2); }
+.member-av { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Cormorant Garamond',serif; font-weight:600; font-size:14px; color:white; flex-shrink:0; }
+.av1{background:linear-gradient(135deg,#c4622d,#c9a96e)}
+.av2{background:linear-gradient(135deg,#7a9e8a,#c9a96e)}
+.av3{background:linear-gradient(135deg,#c9a96e,#c4622d)}
+.av4{background:linear-gradient(135deg,#8b6b4a,#7a9e8a)}
+.member-info { flex:1; }
+.member-name { font-size:14px; font-weight:500; margin-bottom:1px; }
+.member-sub { font-size:12px; color:var(--muted); }
+.mbadge { font-size:10px; padding:3px 8px; border-radius:100px; font-weight:500; }
+.badge-active { background:rgba(122,158,138,0.12); color:var(--sage); }
+.badge-expire { background:rgba(196,98,45,0.1); color:var(--accent); }
+
+/* ── TOAST ── */
+.toast { position:fixed; bottom:100px; left:50%; transform:translateX(-50%); background:var(--accent); color:white; font-family:'DM Sans',sans-serif; font-weight:500; font-size:14px; padding:12px 22px; border-radius:100px; z-index:999; opacity:0; pointer-events:none; transition:all .3s; white-space:nowrap; }
+.toast.show { opacity:1; transform:translateX(-50%) translateY(-8px); }
+::-webkit-scrollbar { width:0; }
+</style>
+</head>
+<body>
+<div class="phone">
+
+<!-- ══ LOGIN ══ -->
+<div id="screen-login" class="screen active">
+  <div class="login-top">
+    <div class="login-logo">N<span>ura</span></div>
+    <div class="login-tagline">Votre sanctuaire de bien-être</div>
+    <div class="login-pillars">
+      <span class="login-pill">🌿 Santé physique</span>
+      <span class="login-pill">🧘 Sérénité</span>
+      <span class="login-pill">✨ Détente</span>
+      <span class="login-pill">💆 Bien-vivre</span>
+      <span class="login-pill">🌸 Forme</span>
+    </div>
+  </div>
+  <div class="login-form-wrap">
+    <div><div class="field-label">Email</div><input type="email" placeholder="votre@email.com" value="sarah.benali@gmail.com"></div>
+    <div><div class="field-label">Mot de passe</div><input type="password" value="••••••••"></div>
+    <button class="btn-main" onclick="goTo('home')">Commencer →</button>
+    <div class="divider">ou</div>
+    <button class="btn-soft" onclick="goTo('home')">Créer un compte</button>
+  </div>
+</div>
+
+<!-- ══ HOME ══ -->
+<div id="screen-home" class="screen">
+  <div class="topbar">
+    <div><div class="greeting">Bonjour ✨</div><div class="username">Sarah</div></div>
+    <div class="avatar">SB</div>
+  </div>
+  <div class="nura-card" onclick="goTo('card')">
+    <div class="card-top">
+      <div class="card-brand">N<span>ura</span></div>
+      <div class="card-status-pill"><div class="status-dot"></div>Actif</div>
+    </div>
+    <div class="card-member-name">Sarah Benali</div>
+    <div class="card-plan">Abonnement Bien-être · expire 31/12/2025</div>
+    <div class="card-tap">Appuyer pour votre QR Code →</div>
+  </div>
+  <div>
+    <div class="section-header" style="margin-bottom:12px">
+      <div class="section-title">Ce mois-ci</div>
+    </div>
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-val tc">12</div><div class="stat-label">séances</div></div>
+      <div class="stat-card"><div class="stat-val sg">3</div><div class="stat-label">espaces visités</div></div>
+      <div class="stat-card"><div class="stat-val">🌸</div><div class="stat-label">sérénité</div></div>
+    </div>
+  </div>
+  <div>
+    <div class="section-header" style="margin-bottom:12px">
+      <div class="section-title">Prochaines séances</div>
+      <div class="section-link" onclick="goTo('planning')">Tout voir</div>
+    </div>
+    <div class="next-sessions">
+      <div class="session-item">
+        <div class="session-time-badge"><div class="session-time">09:00</div><div class="session-day">Lun</div></div>
+        <div class="session-info"><div class="session-name">Yoga Douceur</div><div class="session-meta">🌿 Espace Nura · 60 min · Leila</div></div>
+        <div class="session-spots spots-ok">3 places</div>
+      </div>
+      <div class="session-item">
+        <div class="session-time-badge"><div class="session-time">11:00</div><div class="session-day">Mar</div></div>
+        <div class="session-info"><div class="session-name">Pilates & Posture</div><div class="session-meta">🧘 Studio Forma · 45 min</div></div>
+        <div class="session-spots spots-few">1 place</div>
+      </div>
+      <div class="session-item">
+        <div class="session-time-badge"><div class="session-time">16:00</div><div class="session-day">Jeu</div></div>
+        <div class="session-info"><div class="session-name">Rituel Hammam</div><div class="session-meta">✨ Hammam Safi · 90 min</div></div>
+        <div class="session-spots spots-ok">Réservé</div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="section-header" style="margin-bottom:12px">
+      <div class="section-title">Espaces bien-être</div>
+      <div class="section-link" onclick="goTo('explore')">Voir tout</div>
+    </div>
+    <div class="clubs-scroll">
+      <div class="mini-club" onclick="openClub('yoga')" style="background:#1a2e1e">
+        <div style="height:78px;display:flex;align-items:center;justify-content:center;font-size:38px;opacity:.75">🌿</div>
+        <div style="padding:10px 12px 14px"><div style="font-weight:600;font-size:13px;color:white;margin-bottom:2px">Espace Nura</div><div style="font-size:11px;color:#7a9e8a">Yoga · Méditation</div></div>
+      </div>
+      <div class="mini-club" onclick="openClub('pilates')" style="background:#2a1f14">
+        <div style="height:78px;display:flex;align-items:center;justify-content:center;font-size:38px;opacity:.75">🧘</div>
+        <div style="padding:10px 12px 14px"><div style="font-weight:600;font-size:13px;color:white;margin-bottom:2px">Studio Forma</div><div style="font-size:11px;color:#c9a96e">Pilates · Remise en forme</div></div>
+      </div>
+      <div class="mini-club" onclick="openClub('hammam')" style="background:#2e1a0a">
+        <div style="height:78px;display:flex;align-items:center;justify-content:center;font-size:38px;opacity:.75">✨</div>
+        <div style="padding:10px 12px 14px"><div style="font-weight:600;font-size:13px;color:white;margin-bottom:2px">Hammam Safi</div><div style="font-size:11px;color:#c4622d">Soins · Sérénité</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ CARD ══ -->
+<div id="screen-card" class="screen">
+  <div class="card-page-title">Ma carte membre</div>
+  <div class="big-nura-card">
+    <div class="big-card-top">
+      <div class="big-card-logo">N<span style="color:var(--gold);font-style:italic">ura</span></div>
+      <div class="big-card-active"><div class="status-dot"></div>ACTIF</div>
+    </div>
+    <div class="big-card-name">Sarah Benali</div>
+    <div class="big-card-id">#NURA-2025-00847</div>
+    <div class="qr-wrap"><div id="qr-code"></div></div>
+    <div class="big-card-footer">
+      <div><div class="plan-lbl">Abonnement</div><div class="plan-name">Bien-être Premium</div></div>
+      <div><div class="exp-lbl">Expire le</div><div class="exp-date">31/12/2025</div></div>
+    </div>
+  </div>
+  <div class="scan-hint">🌿 Présente ce code à l'accueil de chaque espace</div>
+  <div style="width:100%">
+    <div class="section-header" style="margin-bottom:12px"><div class="section-title">Derniers accès</div></div>
+    <div class="access-log">
+      <div class="log-item"><div class="log-icon">🧘</div><div class="log-info"><div class="log-place">Studio Forma — Pilates</div><div class="log-date">Aujourd'hui, 09:02</div></div><div class="log-badge">✓ Accès</div></div>
+      <div class="log-item"><div class="log-icon">✨</div><div class="log-info"><div class="log-place">Hammam Safi — Rituel Royal</div><div class="log-date">Jeu 2 Jan, 16:00</div></div><div class="log-badge">✓ Accès</div></div>
+      <div class="log-item"><div class="log-icon">🌿</div><div class="log-info"><div class="log-place">Espace Nura — Yoga</div><div class="log-date">Mer 1 Jan, 10:30</div></div><div class="log-badge">✓ Accès</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ EXPLORE ══ -->
+<div id="screen-explore" class="screen">
+  <div><div class="explore-eyebrow">📍 Meknès</div><div class="explore-title">Ton univers<br><em>bien-être</em></div></div>
+  <div class="search-bar">🔍 &nbsp;Rechercher un espace ou une pratique…</div>
+  <div class="filter-row">
+    <div class="filter-chip active">Tout</div>
+    <div class="filter-chip">🌿 Yoga</div>
+    <div class="filter-chip">🧘 Pilates</div>
+    <div class="filter-chip">✨ Hammam</div>
+    <div class="filter-chip">💆 Massage</div>
+    <div class="filter-chip">🏃 Remise en forme</div>
+  </div>
+  <div class="clubs-grid">
+
+    <div class="club-card" onclick="openClub('yoga')">
+      <div class="club-hero" style="background:#1a2e1e">
+        <div class="club-hero-bg">🌿</div>
+        <div class="club-hero-grad" style="background:linear-gradient(to top,#1a2e1e 30%,transparent)"></div>
+        <div class="club-hero-content">
+          <div class="club-hero-tag" style="background:rgba(122,158,138,.15);color:#7a9e8a;border:1px solid rgba(122,158,138,.25)">🌿 Yoga & Méditation</div>
+          <div class="club-hero-name" style="font-family:'Cormorant Garamond',serif;font-style:italic">Espace Nura</div>
+          <div class="club-hero-sub">Yoga · Méditation · Respiration · Pleine conscience</div>
+        </div>
+      </div>
+      <div class="club-footer" style="background:#1a2e1e">
+        <div class="club-pills">
+          <div class="club-pill" style="color:#7a9e8a;border-color:rgba(122,158,138,.25);background:rgba(122,158,138,.08)">Dès 180 MAD</div>
+          <div class="club-pill" style="color:var(--muted2);border-color:var(--border)">⭐ 4.9</div>
+        </div>
+        <button class="club-cta" style="background:#7a9e8a;color:white">Voir →</button>
+      </div>
+    </div>
+
+    <div class="club-card" onclick="openClub('pilates')">
+      <div class="club-hero" style="background:#2a1f14">
+        <div class="club-hero-bg">🧘</div>
+        <div class="club-hero-grad" style="background:linear-gradient(to top,#2a1f14 30%,transparent)"></div>
+        <div class="club-hero-content">
+          <div class="club-hero-tag" style="background:rgba(201,169,110,.12);color:#c9a96e;border:1px solid rgba(201,169,110,.22)">🧘 Pilates & Forme</div>
+          <div class="club-hero-name" style="font-family:'Cormorant Garamond',serif;font-style:italic">Studio Forma</div>
+          <div class="club-hero-sub">Pilates · Remise en forme · Posture · Barre</div>
+        </div>
+      </div>
+      <div class="club-footer" style="background:#2a1f14">
+        <div class="club-pills">
+          <div class="club-pill" style="color:#c9a96e;border-color:rgba(201,169,110,.22);background:rgba(201,169,110,.08)">Dès 250 MAD</div>
+          <div class="club-pill" style="color:var(--muted2);border-color:var(--border)">⭐ 4.8</div>
+        </div>
+        <button class="club-cta" style="background:#c9a96e;color:#2a1f14">Voir →</button>
+      </div>
+    </div>
+
+    <div class="club-card" onclick="openClub('hammam')">
+      <div class="club-hero" style="background:#2e1a0a">
+        <div class="club-hero-bg">✨</div>
+        <div class="club-hero-grad" style="background:linear-gradient(to top,#2e1a0a 30%,transparent)"></div>
+        <div class="club-hero-content">
+          <div class="club-hero-tag" style="background:rgba(196,98,45,.12);color:#c4622d;border:1px solid rgba(196,98,45,.22)">✨ Hammam & Soins</div>
+          <div class="club-hero-name" style="font-family:'Cormorant Garamond',serif;font-style:italic">Hammam Safi</div>
+          <div class="club-hero-sub">Soins · Gommage · Détente · Rituels marocains</div>
+        </div>
+      </div>
+      <div class="club-footer" style="background:#2e1a0a">
+        <div class="club-pills">
+          <div class="club-pill" style="color:#c4622d;border-color:rgba(196,98,45,.22);background:rgba(196,98,45,.08)">Dès 350 MAD</div>
+          <div class="club-pill" style="color:var(--muted2);border-color:var(--border)">⭐ 5.0</div>
+        </div>
+        <button class="club-cta" style="background:#c4622d;color:white">Voir →</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ CLUB PAGE ══ -->
+<div id="screen-club" class="screen">
+  <div class="club-back" onclick="goBack()">←</div>
+  <div class="club-banner" id="club-banner">
+    <div class="club-banner-bg" id="club-banner-bg"></div>
+    <div class="club-banner-grad" id="club-banner-grad"></div>
+    <div class="club-banner-content">
+      <div class="club-banner-eyebrow" id="club-eyebrow"></div>
+      <div class="club-banner-name" id="club-name" style="font-family:'Cormorant Garamond',serif;font-style:italic"></div>
+      <div class="club-banner-desc" id="club-desc"></div>
+    </div>
+  </div>
+  <div class="club-body">
+    <div class="club-stats">
+      <div class="club-stat"><div class="club-stat-val" id="cs1"></div><div class="club-stat-label" id="cl1"></div></div>
+      <div class="club-stat"><div class="club-stat-val" id="cs2"></div><div class="club-stat-label" id="cl2"></div></div>
+      <div class="club-stat"><div class="club-stat-val" id="cs3"></div><div class="club-stat-label" id="cl3"></div></div>
+    </div>
+    <div><div class="offers-title">Nos offres</div><div class="offers-list" id="offers-list"></div></div>
+    <div><div class="schedule-title">Planning de la semaine</div><div class="schedule-list" id="schedule-list"></div></div>
+  </div>
+</div>
+
+<!-- ══ PLANNING ══ -->
+<div id="screen-planning" class="screen">
+  <div class="section-title" style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:26px;letter-spacing:-0.01em">Planning</div>
+  <div class="day-tabs">
+    <div class="day-tab active"><div class="day-tab-name">Lun</div><div class="day-tab-num">06</div></div>
+    <div class="day-tab"><div class="day-tab-name">Mar</div><div class="day-tab-num">07</div></div>
+    <div class="day-tab"><div class="day-tab-name">Mer</div><div class="day-tab-num">08</div></div>
+    <div class="day-tab"><div class="day-tab-name">Jeu</div><div class="day-tab-num">09</div></div>
+    <div class="day-tab"><div class="day-tab-name">Ven</div><div class="day-tab-num">10</div></div>
+    <div class="day-tab"><div class="day-tab-name">Sam</div><div class="day-tab-num">11</div></div>
+  </div>
+  <div class="cat-filter">
+    <div class="cat-btn active">Tout</div>
+    <div class="cat-btn">🌿 Yoga</div>
+    <div class="cat-btn">🧘 Pilates</div>
+    <div class="cat-btn">✨ Soins</div>
+    <div class="cat-btn">💆 Massage</div>
+    <div class="cat-btn">🏃 Cardio</div>
+  </div>
+  <div class="planning-list">
+    <div class="p-card c1">
+      <div class="p-card-header"><div class="p-card-name">Yoga Douceur</div><div class="p-card-time">09:00 – 10:00</div></div>
+      <div class="p-meta"><div class="p-meta-chip">🌿 Espace Nura</div><div class="p-meta-chip">👤 Leila</div><div class="p-meta-chip">👥 3/10</div></div>
+      <button class="reserve-btn" onclick="reserve(this)">+ Réserver</button>
+    </div>
+    <div class="p-card c2">
+      <div class="p-card-header"><div class="p-card-name">Pilates & Posture</div><div class="p-card-time">11:00 – 11:45</div></div>
+      <div class="p-meta"><div class="p-meta-chip">🧘 Studio Forma</div><div class="p-meta-chip">👤 Karima</div><div class="p-meta-chip">👥 8/8</div></div>
+      <button class="reserve-btn reserved" onclick="reserve(this)">✓ Réservé</button>
+    </div>
+    <div class="p-card c1">
+      <div class="p-card-header"><div class="p-card-name">Méditation Guidée</div><div class="p-card-time">17:00 – 17:45</div></div>
+      <div class="p-meta"><div class="p-meta-chip">🌿 Espace Nura</div><div class="p-meta-chip">👤 Amine</div><div class="p-meta-chip">👥 4/12</div></div>
+      <button class="reserve-btn" onclick="reserve(this)">+ Réserver</button>
+    </div>
+    <div class="p-card c3">
+      <div class="p-card-header"><div class="p-card-name">Rituel Hammam Royal</div><div class="p-card-time">15:00 – 16:30</div></div>
+      <div class="p-meta"><div class="p-meta-chip">✨ Hammam Safi</div><div class="p-meta-chip">⏱ 90 min</div><div class="p-meta-chip">Cabine privée</div></div>
+      <button class="reserve-btn" onclick="reserve(this)">+ Réserver</button>
+    </div>
+    <div class="p-card c2">
+      <div class="p-card-header"><div class="p-card-name">Barre & Stretching</div><div class="p-card-time">19:00 – 19:50</div></div>
+      <div class="p-meta"><div class="p-meta-chip">🧘 Studio Forma</div><div class="p-meta-chip">👤 Sofia</div><div class="p-meta-chip">👥 5/10</div></div>
+      <button class="reserve-btn" onclick="reserve(this)">+ Réserver</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ADMIN ══ -->
+<div id="screen-admin" class="screen">
+  <div class="admin-header">
+    <div><div class="admin-title">Tableau de bord</div><div class="admin-sub">Espace Nura — Meknès</div></div>
+    <div class="admin-tag">Gérant</div>
+  </div>
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="kpi-lbl">Membres actifs</div><div class="kpi-val tc">247</div><div class="kpi-trend up">↑ +12 ce mois</div></div>
+    <div class="kpi-card"><div class="kpi-lbl">Accès aujourd'hui</div><div class="kpi-val sg">38</div><div class="kpi-trend">sur 52 places</div></div>
+    <div class="kpi-card"><div class="kpi-lbl">Revenu mensuel</div><div class="kpi-val gd">18.4k</div><div class="kpi-trend up">↑ +8%</div></div>
+    <div class="kpi-card"><div class="kpi-lbl">Taux de présence</div><div class="kpi-val tc">73%</div><div class="kpi-trend">objectif 80%</div></div>
+  </div>
+  <div class="scanner-card">
+    <div class="scanner-title">Scanner QR Code</div>
+    <div class="scanner-sub">Valide l'accès à l'entrée de l'espace</div>
+    <div class="scanner-preview" onclick="simulateScan()">
+      <div class="scanner-frame"><div class="scanner-line"></div></div>
+      <div class="scan-text">Appuyer pour simuler un scan</div>
+    </div>
+    <div id="scan-result" class="scan-result">
+      <div class="scan-result-icon" id="scan-icon"></div>
+      <div><div class="scan-result-name" id="scan-name"></div><div class="scan-result-info" id="scan-info"></div></div>
+    </div>
+  </div>
+  <div>
+    <div class="section-header" style="margin-bottom:12px"><div class="section-title">Membres récents</div><div class="section-link">Voir tout</div></div>
+    <div class="member-list">
+      <div class="member-item"><div class="member-av av1">SB</div><div class="member-info"><div class="member-name">Sarah Benali</div><div class="member-sub">Bien-être Premium · 31/12/2025</div></div><div class="mbadge badge-active">Actif</div></div>
+      <div class="member-item"><div class="member-av av2">AK</div><div class="member-info"><div class="member-name">Amine Khalil</div><div class="member-sub">Standard · 15/01/2026</div></div><div class="mbadge badge-active">Actif</div></div>
+      <div class="member-item"><div class="member-av av3">NM</div><div class="member-info"><div class="member-name">Nadia Moussaoui</div><div class="member-sub">Premium · 05/01/2026</div></div><div class="mbadge badge-expire">Expire bientôt</div></div>
+      <div class="member-item"><div class="member-av av4">YB</div><div class="member-info"><div class="member-name">Youssef Brahim</div><div class="member-sub">Sérénité · 28/02/2026</div></div><div class="mbadge badge-active">Actif</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar" style="display:none">
+  <div class="nav-item active" id="nav-home" onclick="goTo('home')"><div class="nav-icon">🏠</div><div class="nav-label">Accueil</div></div>
+  <div class="nav-item" id="nav-explore" onclick="goTo('explore')"><div class="nav-icon">🌿</div><div class="nav-label">Explorer</div></div>
+  <div class="nav-item" id="nav-planning" onclick="goTo('planning')"><div class="nav-icon">🗓</div><div class="nav-label">Planning</div></div>
+  <div class="nav-item" id="nav-card" onclick="goTo('card')"><div class="nav-icon">🪪</div><div class="nav-label">Ma carte</div></div>
+  <div class="nav-item" id="nav-admin" onclick="goTo('admin')"><div class="nav-icon">⚙️</div><div class="nav-label">Admin</div></div>
+</nav>
+<div class="toast" id="toast"></div>
+</div>
+
+<script>
+const CLUBS = {
+  yoga: {
+    bg:'#1a2e1e', accent:'#7a9e8a', accentBg:'rgba(122,158,138,0.1)', accentBorder:'rgba(122,158,138,0.2)', accentDark:'#1a2e1e',
+    emoji:'🌿', gradient:'linear-gradient(to top,#1a2e1e 40%,rgba(26,46,30,0.4))',
+    eyebrow:'🌿 Yoga & Méditation · Bien-être mental',
+    name:'Espace Nura', desc:'Un espace de douceur et de pleine conscience pour reconnecter corps et esprit.',
+    stats:[{val:'4.9 ⭐',label:'Note'},{val:'18',label:'Séances/sem.'},{val:'320',label:'Membres'}],
+    offers:[
+      {name:'Séance découverte',desc:'Essaie yoga douceur ou méditation guidée.',price:'180',period:'/ séance',features:['1 séance au choix','Tapis fourni','Infusion offerte'],btnText:'Réserver'},
+      {name:'Pass Mensuel Sérénité',desc:'Accès illimité — yoga, méditation, respiration.',price:'650',period:'/ mois',features:['Séances illimitées','Plein air & studio','App Nura incluse','Annulation libre'],btnText:'Choisir ce plan',highlight:true},
+      {name:'Retraite week-end',desc:'2 jours de silence, yoga et reconnexion profonde.',price:'1 200',period:'/ week-end',features:['Sam + Dim','Repas sains inclus','Max 8 personnes'],btnText:'Découvrir'},
+    ],
+    schedule:[
+      {time:'07:00',day:'Lun',name:'Yoga Sunrise',meta:'👤 Leila · 60 min · plein air',spots:'4 places',ok:true},
+      {time:'10:30',day:'Mar',name:'Vinyasa Flow',meta:'👤 Leila · 75 min · studio',spots:'2 places',ok:false},
+      {time:'18:00',day:'Mer',name:'Méditation guidée',meta:'👤 Amine · 45 min',spots:'8 places',ok:true},
+      {time:'09:00',day:'Ven',name:'Yin Yoga',meta:'👤 Leila · 90 min',spots:'6 places',ok:true},
+    ],
+  },
+  pilates: {
+    bg:'#2a1f14', accent:'#c9a96e', accentBg:'rgba(201,169,110,0.1)', accentBorder:'rgba(201,169,110,0.22)', accentDark:'#2a1f14',
+    emoji:'🧘', gradient:'linear-gradient(to top,#2a1f14 40%,rgba(42,31,20,0.4))',
+    eyebrow:'🧘 Pilates & Remise en forme · Santé physique',
+    name:'Studio Forma', desc:'Méthode Pilates et remise en forme douce — pour un corps aligné et une santé durable.',
+    stats:[{val:'4.8 ⭐',label:'Note'},{val:'24',label:'Cours/sem.'},{val:'180',label:'Membres'}],
+    offers:[
+      {name:'Cours à l\'unité',desc:'Mat, reformer ou barre — au choix.',price:'250',period:'/ séance',features:['1 cours au choix','Équipement fourni','Max 8 pers.'],btnText:'Réserver'},
+      {name:'Pass 10 séances',desc:'Le plan préféré de nos membres actifs.',price:'2 000',period:'/ 10 séances',features:['10 cours flexibles','Mat + Reformer','Priorité réservation','Bilan posture offert'],btnText:'Choisir ce plan',highlight:true},
+      {name:'Abonnement Forme',desc:'Séances illimitées pour votre santé physique.',price:'980',period:'/ mois',features:['Illimité 7j/7','Tous les formats','Coach dédié'],btnText:'S\'abonner'},
+    ],
+    schedule:[
+      {time:'08:00',day:'Lun',name:'Mat Pilates',meta:'👤 Karima · 50 min',spots:'3 places',ok:true},
+      {time:'12:00',day:'Mar',name:'Reformer & Posture',meta:'👤 Karima · 55 min',spots:'1 place',ok:false},
+      {time:'17:30',day:'Mer',name:'Barre & Stretching',meta:'👤 Sofia · 45 min',spots:'5 places',ok:true},
+      {time:'10:00',day:'Sam',name:'Pilates Débutants',meta:'👤 Sofia · 60 min',spots:'7 places',ok:true},
+    ],
+  },
+  hammam: {
+    bg:'#2e1a0a', accent:'#c4622d', accentBg:'rgba(196,98,45,0.1)', accentBorder:'rgba(196,98,45,0.22)', accentDark:'#2e1a0a',
+    emoji:'✨', gradient:'linear-gradient(to top,#2e1a0a 40%,rgba(46,26,10,0.4))',
+    eyebrow:'✨ Hammam & Soins · Détente & Sérénité',
+    name:'Hammam Safi', desc:'L\'art ancestral du soin marocain — gommage, rituels et détente profonde.',
+    stats:[{val:'5.0 ⭐',label:'Note'},{val:'12',label:'Soins'},{val:'Privé',label:'Cabines'}],
+    offers:[
+      {name:'Rituel Essentiel',desc:'Hammam traditionnel avec gommage savon beldi.',price:'350',period:'/ personne',features:['Hammam 45 min','Gommage kessa','Savon beldi'],btnText:'Réserver'},
+      {name:'Rituel Bien-être Royal',desc:'L\'expérience complète — hammam, masque, massage.',price:'680',period:'/ personne',features:['Hammam 60 min','Masque ghassoul','Massage 30 min','Thé à la menthe','Cabine privée'],btnText:'Réserver le Royal',highlight:true},
+      {name:'Forfait Duo Sérénité',desc:'Partagez l\'instant à deux dans votre espace privé.',price:'1 100',period:'/ couple',features:['Cabine privée 2h','2 rituels complets','Dattes & thé'],btnText:'Offrir ce moment'},
+    ],
+    schedule:[
+      {time:'10:00',day:'Lun',name:'Rituel Essentiel',meta:'⏱ 45 min · cabines 1–4',spots:'3 créneaux',ok:true},
+      {time:'14:00',day:'Mar',name:'Rituel Royal',meta:'⏱ 90 min · cabine VIP',spots:'1 créneau',ok:false},
+      {time:'11:00',day:'Jeu',name:'Forfait Duo',meta:'⏱ 2h · cabine privée',spots:'2 créneaux',ok:true},
+      {time:'16:00',day:'Sam',name:'Rituel Royal',meta:'⏱ 90 min · cabine VIP',spots:'4 créneaux',ok:true},
+    ],
+  },
+};
+
+let prevScreen = 'explore';
+
+function goTo(s) {
+  document.querySelectorAll('.screen').forEach(x => x.classList.remove('active'));
+  document.getElementById('screen-'+s).classList.add('active');
+  const nb = document.getElementById('navbar');
+  nb.style.display = s === 'login' ? 'none' : 'flex';
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const ni = document.getElementById('nav-'+s);
+  if(ni) ni.classList.add('active');
+  if(s === 'card') setTimeout(generateQR, 80);
+  if(s !== 'club') window.scrollTo(0,0);
+}
+
+function openClub(id) {
+  prevScreen = document.querySelector('.screen.active')?.id?.replace('screen-','') || 'explore';
+  const c = CLUBS[id];
+  document.getElementById('club-banner').style.background = c.bg;
+  document.getElementById('club-banner-bg').textContent = c.emoji;
+  document.getElementById('club-banner-grad').style.background = c.gradient;
+  document.getElementById('club-eyebrow').textContent = c.eyebrow;
+  document.getElementById('club-eyebrow').style.color = c.accent;
+  document.getElementById('club-name').textContent = c.name;
+  document.getElementById('club-desc').textContent = c.desc;
+  document.getElementById('screen-club').style.background = c.bg;
+  c.stats.forEach((s,i) => {
+    document.getElementById('cs'+(i+1)).textContent = s.val;
+    document.getElementById('cs'+(i+1)).style.color = c.accent;
+    document.getElementById('cl'+(i+1)).textContent = s.label;
+  });
+  const ol = document.getElementById('offers-list');
+  ol.innerHTML = '';
+  c.offers.forEach(o => {
+    const hl = o.highlight ? `border-color:${c.accentBorder};background:${c.accentBg}` : '';
+    ol.innerHTML += `<div class="offer-card" style="${hl}">
+      <div class="offer-header">
+        <div><div class="offer-name">${o.name}</div><div class="offer-desc">${o.desc}</div></div>
+        <div style="text-align:right;flex-shrink:0"><div class="offer-price" style="color:${c.accent}">${o.price}</div><div class="offer-period">MAD${o.period}</div></div>
+      </div>
+      <div class="offer-feats">${o.features.map(f=>`<div class="offer-feat">✓ ${f}</div>`).join('')}</div>
+      <div class="offer-foot"><button class="offer-btn" style="background:${c.accent};color:white" onclick="showToast('✓ ${o.name} — réservé !')">${o.btnText}</button></div>
+    </div>`;
+  });
+  const sl = document.getElementById('schedule-list');
+  sl.innerHTML = '';
+  c.schedule.forEach(s => {
+    const sp = s.ok
+      ? `background:${c.accentBg};color:${c.accent};border:1px solid ${c.accentBorder}`
+      : `background:rgba(196,98,45,0.06);color:#c4622d;border:1px solid rgba(196,98,45,0.15)`;
+    sl.innerHTML += `<div class="sched-item" onclick="showToast('✓ ${s.name} — réservé !')">
+      <div class="sched-time-box" style="background:${c.accentBg};border:1px solid ${c.accentBorder}">
+        <div class="sched-time" style="color:${c.accent}">${s.time}</div>
+        <div class="sched-day">${s.day}</div>
+      </div>
+      <div class="sched-info"><div class="sched-name">${s.name}</div><div class="sched-meta">${s.meta}</div></div>
+      <div class="sched-spots" style="${sp}">${s.spots}</div>
+    </div>`;
+  });
+  goTo('club');
+  document.getElementById('screen-club').scrollTop = 0;
+}
+
+function goBack() { goTo(prevScreen); }
+
+function generateQR() {
+  const el = document.getElementById('qr-code');
+  if(el && !el.querySelector('canvas')) {
+    new QRCode(el, { text:'NURA:NURA-2025-00847:SARAH-BENALI:BIENETRE-PREMIUM', width:148, height:148, colorDark:'#2c1f14', colorLight:'#ffffff', correctLevel:QRCode.CorrectLevel.H });
+  }
+}
+
+const scanResults = [
+  {ok:true, name:'Sarah Benali', info:'Bien-être Premium · accès autorisé · 09:04'},
+  {ok:true, name:'Amine Khalil', info:'Standard · accès autorisé · 09:05'},
+  {ok:false, name:'Inconnu #4821', info:'Abonnement expiré · accès refusé'},
+  {ok:true, name:'Nadia Moussaoui', info:'Premium · accès autorisé · 09:07'},
+];
+let scanIdx = 0;
+function simulateScan() {
+  const r = scanResults[scanIdx++ % scanResults.length];
+  const el = document.getElementById('scan-result');
+  el.className = 'scan-result '+(r.ok?'success':'fail');
+  el.style.display = 'flex';
+  document.getElementById('scan-icon').textContent = r.ok ? '✅' : '❌';
+  document.getElementById('scan-name').textContent = r.name;
+  document.getElementById('scan-info').textContent = r.info;
+  showToast(r.ok ? '✓ Accès accordé' : '✗ Accès refusé');
+}
+
+function reserve(btn) {
+  if(btn.classList.contains('reserved')) { btn.classList.remove('reserved'); btn.textContent='+ Réserver'; showToast('Réservation annulée'); }
+  else { btn.classList.add('reserved'); btn.textContent='✓ Réservé'; showToast('✓ Séance réservée !'); }
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2400);
+}
+
+document.querySelectorAll('.day-tab').forEach(tab => {
+  tab.addEventListener('click', () => { document.querySelectorAll('.day-tab').forEach(t=>t.classList.remove('active')); tab.classList.add('active'); });
+});
+document.querySelectorAll('.cat-btn').forEach(btn => {
+  btn.addEventListener('click', () => { document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); });
+});
+document.querySelectorAll('.filter-chip').forEach(btn => {
+  btn.addEventListener('click', () => { document.querySelectorAll('.filter-chip').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); });
+});
+</script>
+</body>
+</html>
