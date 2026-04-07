@@ -417,7 +417,7 @@ input:focus { border-color: var(--accent); }
     </div>
   </div>
   <div class="login-form-wrap">
-    <div><div class="field-label">Email</div><input type="email" placeholder="votre@email.com" value="sarah.benali@gmail.com"></div>
+    <div><div class="field-label">Email</div><input type="email" placeholder="votre@email.com" value="Nouhaila.Belfassi@gmail.com"></div>
     <div><div class="field-label">Mot de passe</div><input type="password" value="••••••••"></div>
     <button class="btn-main" onclick="goTo('home')">Commencer →</button>
     <div class="divider">ou</div>
@@ -428,7 +428,7 @@ input:focus { border-color: var(--accent); }
 <!-- ══ HOME ══ -->
 <div id="screen-home" class="screen">
   <div class="topbar">
-    <div><div class="greeting">Bonjour ✨</div><div class="username">Sarah</div></div>
+    <div><div class="greeting">Bonjour ✨</div><div class="username">Nouhaila</div></div>
     <div class="avatar">SB</div>
   </div>
   <div class="nura-card" onclick="goTo('card')">
@@ -436,7 +436,7 @@ input:focus { border-color: var(--accent); }
       <div class="card-brand">N<span>ura</span></div>
       <div class="card-status-pill"><div class="status-dot"></div>Actif</div>
     </div>
-    <div class="card-member-name">Sarah Benali</div>
+    <div class="card-member-name">Nouhaila Belfassi</div>
     <div class="card-plan">Abonnement Bien-être · expire 31/12/2025</div>
     <div class="card-tap">Appuyer pour votre QR Code →</div>
   </div>
@@ -503,7 +503,7 @@ input:focus { border-color: var(--accent); }
       <div class="big-card-logo">N<span style="color:var(--gold);font-style:italic">ura</span></div>
       <div class="big-card-active"><div class="status-dot"></div>ACTIF</div>
     </div>
-    <div class="big-card-name">Sarah Benali</div>
+    <div class="big-card-name">Nouhaila Belfassi</div>
     <div class="big-card-id">#NURA-2025-00847</div>
     <div class="qr-wrap"><div id="qr-code"></div></div>
     <div class="big-card-footer">
@@ -694,7 +694,7 @@ input:focus { border-color: var(--accent); }
   <div>
     <div class="section-header" style="margin-bottom:12px"><div class="section-title">Membres récents</div><div class="section-link">Voir tout</div></div>
     <div class="member-list">
-      <div class="member-item"><div class="member-av av1">SB</div><div class="member-info"><div class="member-name">Sarah Benali</div><div class="member-sub">Bien-être Premium · 31/12/2025</div></div><div class="mbadge badge-active">Actif</div></div>
+      <div class="member-item"><div class="member-av av1">SB</div><div class="member-info"><div class="member-name">Nouhaila Belfassi</div><div class="member-sub">Bien-être Premium · 31/12/2025</div></div><div class="mbadge badge-active">Actif</div></div>
       <div class="member-item"><div class="member-av av2">AK</div><div class="member-info"><div class="member-name">Amine Khalil</div><div class="member-sub">Standard · 15/01/2026</div></div><div class="mbadge badge-active">Actif</div></div>
       <div class="member-item"><div class="member-av av3">NM</div><div class="member-info"><div class="member-name">Nadia Moussaoui</div><div class="member-sub">Premium · 05/01/2026</div></div><div class="mbadge badge-expire">Expire bientôt</div></div>
       <div class="member-item"><div class="member-av av4">YB</div><div class="member-info"><div class="member-name">Youssef Brahim</div><div class="member-sub">Sérénité · 28/02/2026</div></div><div class="mbadge badge-active">Actif</div></div>
@@ -838,12 +838,12 @@ function goBack() { goTo(prevScreen); }
 function generateQR() {
   const el = document.getElementById('qr-code');
   if(el && !el.querySelector('canvas')) {
-    new QRCode(el, { text:'NURA:NURA-2025-00847:SARAH-BENALI:BIENETRE-PREMIUM', width:148, height:148, colorDark:'#2c1f14', colorLight:'#ffffff', correctLevel:QRCode.CorrectLevel.H });
+    new QRCode(el, { text:'NURA:NURA-2025-00847:Nouhaila-Belfassi:BIENETRE-PREMIUM', width:148, height:148, colorDark:'#2c1f14', colorLight:'#ffffff', correctLevel:QRCode.CorrectLevel.H });
   }
 }
 
 const scanResults = [
-  {ok:true, name:'Sarah Benali', info:'Bien-être Premium · accès autorisé · 09:04'},
+  {ok:true, name:'Nouhaila Belfassi', info:'Bien-être Premium · accès autorisé · 09:04'},
   {ok:true, name:'Amine Khalil', info:'Standard · accès autorisé · 09:05'},
   {ok:false, name:'Inconnu #4821', info:'Abonnement expiré · accès refusé'},
   {ok:true, name:'Nadia Moussaoui', info:'Premium · accès autorisé · 09:07'},
